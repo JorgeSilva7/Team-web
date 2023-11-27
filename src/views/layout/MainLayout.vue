@@ -4,7 +4,7 @@
             <q-toolbar>
                 <q-btn dense flat round icon="menu" @click="toggleShowLeftDrawer" />
 
-                <q-toolbar-title>
+                <q-toolbar-title id="toolbar">
                     <q-avatar>
                         <img src="@/assets/images/team.png" alt="Team web" />
                     </q-avatar>
@@ -61,7 +61,7 @@
                         label="Club description" />
                 </q-card-section>
 
-                <p v-if="error" class="text-negative text-center">{{ error.message }}</p>
+                <p v-if="error" class="text-negative text-center error">{{ error.message }}</p>
 
                 <q-card-actions align="right" class="text-primary">
                     <q-btn flat label="Cancel" v-close-popup />
