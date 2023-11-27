@@ -1,14 +1,25 @@
 <script setup>
 import { ref } from 'vue'
-import useUserStore from '@/stores/user'
+import useUserStore from '@/stores/user.store'
+import { useQuasar } from 'quasar'
 
+const $q = useQuasar()
 const userStore = useUserStore()
 
 const email = ref('')
 const password = ref('')
+const error = ref(null)
 
 async function login() {
-  await userStore.signIn({ email: email.value, password: password.value })
+  try {
+    error.value = null;
+    $q.loading.show()
+    await userStore.signIn({ email: email.value, password: password.value })
+    $q.loading.hide()
+  } catch (err) {
+    error.value = err
+    $q.loading.hide()
+  }
 }
 </script>
 
@@ -18,31 +29,22 @@ async function login() {
       <q-page class="flex flex-center bg-grey-2">
         <q-card class="q-pa-md shadow-2 my_card" bordered>
           <q-card-section class="text-center">
-            <div class="text-grey-9 text-h5 text-weight-bold">Sign in</div>
-            <div class="text-grey-8">Sign in below to access your account</div>
+            <q-avatar>
+              <img src="@/assets/images/team.png" alt="Team web" />
+            </q-avatar>
+            <div class="text-grey-9 text-h5 text-weight-bold q-mt-md">Sign In</div>
+            <div class="text-grey-8">Sign in below to access to your Team Account</div>
           </q-card-section>
           <q-card-section>
-            <q-input dense outlined v-model="email" label="Email Address"></q-input>
-            <q-input
-              dense
-              outlined
-              class="q-mt-md"
-              v-model="password"
-              type="password"
-              label="Password"
-            ></q-input>
+            <q-input dense outlined v-model="email" label="Your email" for="login-email"
+              @keypress.enter="login"></q-input>
+            <q-input dense outlined class="q-mt-md" v-model="password" type="password" label="Password"
+              for="login-password" @keypress.enter="login"></q-input>
           </q-card-section>
+          <p v-if="error" class="text-negative text-center q-mt-md">{{ error.message }}</p>
           <q-card-section>
-            <q-btn
-              style="border-radius: 8px"
-              color="dark"
-              rounded
-              size="md"
-              label="Sign in"
-              no-caps
-              class="full-width"
-              @click="login"
-            ></q-btn>
+            <q-btn style="border-radius: 8px" color="dark" rounded size="md" label="Sign in" no-caps class="full-width"
+              @click="login"></q-btn>
           </q-card-section>
         </q-card>
       </q-page>

@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import { Quasar } from 'quasar'
+import { Quasar, Notify, Loading } from 'quasar'
 import piniaPluginPersistedState from 'pinia-plugin-persistedstate'
 
 // Import icon libraries
@@ -19,7 +19,13 @@ pinia.use(piniaPluginPersistedState)
 const app = createApp(App)
 
 app.use(Quasar, {
-  plugins: {} // import Quasar plugins and add here
+  plugins: {
+    Notify,
+    Loading
+  },
+  config: {
+    notify: { position: 'top', timeout: 3000 }
+  }
 })
 app.use(pinia)
 app.use(router)

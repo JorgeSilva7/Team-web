@@ -22,7 +22,12 @@ const useUserStore = defineStore(
       token.value = null
     }
 
-    return { user, token, signIn, $reset }
+    async function logout() {
+      $reset()
+      router.replace({ name: 'login' })
+    }
+
+    return { user, token, signIn, $reset, logout }
   },
   { persist: true }
 )
